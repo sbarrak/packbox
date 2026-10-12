@@ -1,6 +1,6 @@
 # PackBox Studio — User Manual
 
-**Version 0.1.0 · August 2026**
+**Version 1.0 · August 2026**
 
 A local packaging design application: draw dielines, place artwork, watch the box fold in 3D, and export production files. Nothing is uploaded anywhere — the app runs entirely on your own computer.
 
@@ -789,4 +789,4 @@ Stated plainly, so nothing catches you out.
 
 ---
 
-*PackBox Studio 0.1.0 — built with React, Three.js and Konva, wrapped in Electron. Your designs stay on your computer.*
+*PackBox Studio 1.0 — built with React, Three.js and Konva, wrapped in Electron. Your designs stay on your computer.*
