@@ -1,0 +1,544 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.project-bar {
+  display: flex;
+  gap: 6px;
+}
+
+.project-bar button {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.view-tabs {
+  flex-shrink: 0;
+}
+
+.dim-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dim-toggle input {
+  width: auto;
+  margin: 0;
+}
+
+/* The help button's margin-left:auto pushes it (and everything after it,
+   i.e. the export bar) to the right edge. */
+.export-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.export-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.export-checkbox input {
+  width: auto;
+  margin: 0;
+}
+
+.export-bar button {
+  background: var(--accent-2);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.export-bar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.panel {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.artwork-panel {
+  width: 300px;
+  flex-shrink: 0;
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+.panel h2 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 18px 0 8px;
+}
+
+.panel h2:first-child {
+  margin-top: 0;
+}
+
+.panel h3 {
+  font-size: 12px;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+
+.panel section {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel section:last-child {
+  border-bottom: none;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 2px 0 8px;
+}
+
+select,
+.field input,
+input[type="file"] {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-bottom: 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+/* Brief cue shown on the control that governs the panel just clicked in the 2D
+   view. Uses the app's amber selection accent (the same colour the selected panel
+   is outlined with on the canvas) and fades out within 1s. */
+@keyframes field-flash {
+  0% {
+    background: rgba(245, 158, 11, 0.35);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.35);
+  }
+  60% {
+    background: rgba(245, 158, 11, 0.18);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+  }
+  100% {
+    background: transparent;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0);
+  }
+}
+
+.field-flash {
+  animation: field-flash 1s ease-out;
+}
+
+.field-flash > span {
+  color: #f59e0b;
+}
+
+button.secondary {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.stage {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  background: #0e1015;
+}
+
+/* The dieline editor owns its own scrolling viewport (so it can keep the zoom
+   anchored), so this wrapper just gives it the full stage area. */
+.stage-scroll {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.dieline-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+/* Scrolls in both axes, and centres the canvas when it's smaller than the
+   viewport. `margin: auto` on the canvas (rather than flex centring) is what
+   keeps it centred when small WITHOUT clipping its top/left when it's larger
+   than the viewport. */
+.dieline-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  display: flex;
+  padding: 24px;
+}
+
+.zoom-toolbar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.zoom-toolbar button {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 26px;
+  height: 24px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Fixed width sized for the widest possible readout ("999%") so the - and +
+   buttons never move as the number's digit count changes. Tabular figures keep
+   the digits themselves from shifting too. */
+.zoom-toolbar .zoom-readout {
+  width: 52px;
+  min-width: 52px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.toolbar-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+.toolbar-check {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.toolbar-check input {
+  width: auto;
+  margin: 0;
+}
+
+/* Help button + shortcuts popover */
+.help-wrap {
+  position: relative;
+  margin-left: auto;
+}
+
+.help-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.help-popover {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 30;
+  width: 320px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.help-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.help-popover h4 {
+  margin: 10px 0 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.help-popover dl {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 3px 10px;
+  margin: 0;
+}
+
+.help-popover dt {
+  color: var(--text);
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.help-popover dd {
+  margin: 0;
+}
+
+.stage-3d {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.stage-3d > div:first-child {
+  flex: 1;
+}
+
+.fold-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.fold-slider input {
+  flex: 1;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 12px;
+}
+
+.tabs button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.tabs button.active {
+  background: var(--accent-2);
+  color: white;
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.button-row button,
+.upload-button {
+  flex: 1;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.upload-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.layer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.layer-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.layer-list input {
+  flex: 1;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+/* Floating inspector for the selected image — only mounted while one is selected. */
+.image-inspector {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 6;
+  width: 230px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.image-inspector-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 9px;
+}
+
+.slider-row span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider-row b {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.slider-row input[type="range"] {
+  width: 100%;
+  margin: 0;
+}
+
+.muted.small {
+  font-size: 11px;
+  margin: 6px 0 0;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 6px;
+}
+
+.icon-btn:hover {
+  color: #ef4444;
+}

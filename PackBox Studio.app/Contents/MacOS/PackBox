@@ -1,0 +1,43 @@
+#!/bin/bash
+# PackBox Studio launcher (macOS).
+#
+# Double-clicking this app REBUILDS the renderer from the current source and
+# then starts Electron — so after Claude (or anyone) updates the code, the very
+# next launch runs the latest version. Nothing is installed; the app bundle is
+# just this script living inside the project folder.
+set -e
+
+# The .app sits in the project root: <root>/PackBox Studio.app/Contents/MacOS/PackBox
+ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+cd "$ROOT"
+LOG="$ROOT/launcher.log"
+
+fail() {
+  osascript -e "display dialog \"$1\" buttons {\"OK\"} default button 1 with title \"PackBox Studio\" with icon caution" >/dev/null 2>&1 || true
+  echo "$1" >> "$LOG"
+  exit 1
+}
+
+# Finder launches apps with a minimal PATH that misses every common Node install
+# location — fix that before looking for node/npm.
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+if ! command -v npm >/dev/null 2>&1 && [ -d "$HOME/.nvm/versions/node" ]; then
+  LATEST_NVM="$(ls -1d "$HOME/.nvm/versions/node"/*/bin 2>/dev/null | sort -V | tail -1)"
+  [ -n "$LATEST_NVM" ] && export PATH="$LATEST_NVM:$PATH"
+fi
+
+command -v npm >/dev/null 2>&1 || fail "PackBox needs Node.js (which includes npm) to run. Install it once from nodejs.org, then double-click this app again."
+
+{
+  echo "=== $(date) launching from $ROOT ==="
+  # First run only: pull in dependencies.
+  if [ ! -d node_modules ]; then
+    osascript -e 'display notification "First run: installing dependencies (about a minute)…" with title "PackBox Studio"' >/dev/null 2>&1 || true
+    npm install
+  fi
+
+  # ALWAYS rebuild, so the app that opens is the code as it is right now.
+  npx vite build --logLevel error
+
+  PACKBOX_DIST=1 npx electron .
+} >> "$LOG" 2>&1 || fail "PackBox failed to start. See launcher.log in the project folder for details."

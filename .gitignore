@@ -1,0 +1,35 @@
+# Dependencies and build output
+node_modules/
+dist/
+release/
+*.tsbuildinfo
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs and runtime artifacts
+*.log
+launcher.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Temporary, backup and old files
+_claude_backups/
+_to_delete/
+.sync-manifest
+.claude/
+*.tmp
+*.bak
+*.orig
+*~

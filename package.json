@@ -1,0 +1,96 @@
+{
+  "name": "packbox",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PackBox Studio — free, open-source packaging design app: parametric box dieline generator, artwork editor and 3D fold simulator with SVG, DXF, PDF and GLB export.",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "electron:dev": "concurrently -k \"npm:dev\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "start": "npm run electron:dev"
+  },
+  "build": {
+    "appId": "com.packbox.studio",
+    "productName": "PackBox Studio",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "dxf-writer": "^1.18.4",
+    "jspdf": "^4.2.1",
+    "konva": "^10.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-konva": "^19.2.5",
+    "svg2pdf.js": "^2.7.0",
+    "three": "^0.185.1",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^1.0.5",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.185.4",
+    "@vitejs/plugin-react": "^6.0.4",
+    "concurrently": "^10.0.4",
+    "cross-env": "^10.1.0",
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3",
+    "oxlint": "^1.75.0",
+    "tsx": "^4.23.12",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0",
+    "wait-on": "^9.1.0"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/sbarrak/packbox#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbarrak/packbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sbarrak/packbox/issues"
+  },
+  "keywords": [
+    "packaging-design",
+    "dieline",
+    "dieline-generator",
+    "box-template",
+    "box-maker",
+    "packaging",
+    "carton",
+    "folding-carton",
+    "mailer-box",
+    "die-cut",
+    "3d-preview",
+    "svg",
+    "dxf",
+    "pdf",
+    "electron",
+    "react",
+    "threejs",
+    "konva"
+  ]
+}
